@@ -57,4 +57,10 @@ public class Modalidades implements Serializable {
         this.descricao = descricao;
     }
 
+    @Override
+    public String toString() {
+        return descricao; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
+    
 }

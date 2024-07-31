@@ -21,9 +21,10 @@ public class TelaModalidades extends javax.swing.JFrame {
 
     /**
      * Creates new form TelaModalidades
-     */
-    PersistenciaJPA jpa1 = new PersistenciaJPA();
-    DefaultListModel<String> listModel = new DefaultListModel<>();
+     */  
+        
+
+    DefaultListModel<Modalidades> listModel = new DefaultListModel<>();
     
  
     public TelaModalidades() {
@@ -42,7 +43,7 @@ public class TelaModalidades extends javax.swing.JFrame {
         
         
         for(Modalidades Modalidade : modalidades){
-            listModel.addElement(Modalidade.getDescricao());      
+            listModel.addElement(Modalidade);      
         }
         
         jpa.fecharConexao();
@@ -62,6 +63,8 @@ public class TelaModalidades extends javax.swing.JFrame {
         btnNovo = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstModalidades = new javax.swing.JList<>();
+        btnRemover = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,31 +75,48 @@ public class TelaModalidades extends javax.swing.JFrame {
             }
         });
 
-        lstModalidades.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(lstModalidades);
+
+        btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
+
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(13, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(98, 98, 98))
         );
 
@@ -113,7 +133,7 @@ public class TelaModalidades extends javax.swing.JFrame {
         
         moda.setDescricao(nomeDesc);
         
-        listModel.addElement(nomeDesc);
+        listModel.addElement(moda);
         try {
             jpa3.persist(moda);
         } catch (Exception e) {
@@ -121,6 +141,50 @@ public class TelaModalidades extends javax.swing.JFrame {
         
         mostraModalidades();
     }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+         Modalidades modaSele = lstModalidades.getSelectedValue();
+         PersistenciaJPA jpa;
+         jpa = new PersistenciaJPA();
+        
+       
+               try {  
+                   jpa.conexaoAberta();
+                   jpa.remover(modaSele);           
+               } catch (Exception e) {
+                   System.err.println("ERRRO TOTTAALLL!");
+               } finally {
+                    jpa.fecharConexao();
+                    mostraModalidades();
+               }
+  
+        
+        
+    }//GEN-LAST:event_btnRemoverActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+    
+       Modalidades modaSele = lstModalidades.getSelectedValue();
+       PersistenciaJPA jpa2 = new PersistenciaJPA();
+         
+       if(modaSele != null){
+               try {
+                   jpa2.conexaoAberta();
+                   Modalidades modaJPA = (Modalidades) jpa2.find(Modalidades.class, modaSele.getId());
+                   modaJPA.setDescricao(JOptionPane.showInputDialog(rootPane, "Nova descrição:", modaSele.getDescricao()));  
+                   jpa2.persist(modaJPA);
+                   jpa2.fecharConexao();
+                   mostraModalidades();
+               } catch (Exception e) {
+                   System.err.println("ERRRO TOTTAALLL!");
+               }  
+       }
+       else
+            System.out.println("Erro ao selecionar modalidade!");
+        
+        
+
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -138,8 +202,10 @@ public class TelaModalidades extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnRemover;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<String> lstModalidades;
+    private javax.swing.JList<Modalidades> lstModalidades;
     // End of variables declaration//GEN-END:variables
 }
