@@ -143,27 +143,34 @@ public class TelaModalidades extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-         Modalidades modaSele = lstModalidades.getSelectedValue();
-         PersistenciaJPA jpa;
-         jpa = new PersistenciaJPA();
         
-       
-               try {  
-                   jpa.conexaoAberta();
-                   jpa.remover(modaSele);           
-               } catch (Exception e) {
-                   System.err.println("ERRRO TOTTAALLL!");
-               } finally {
-                    jpa.fecharConexao();
+        PersistenciaJPA jpa = new PersistenciaJPA();
+        
+         Modalidades modalidadeSelecionada = lstModalidades.getSelectedValue();
+        
+            int confirmacaoDel = JOptionPane.showConfirmDialog(rootPane,
+                    "Tem certeza que deseja remover modalidade " + modalidadeSelecionada.getDescricao());
+            if (confirmacaoDel == JOptionPane.YES_OPTION) {
+                try {
+                    
+                    jpa.conexaoAberta();
+                    jpa.remover(modalidadeSelecionada);
+                    
                     mostraModalidades();
-               }
-  
+                    JOptionPane.showMessageDialog(rootPane, "Modalidade Removida!");
+                } catch (Exception e) {
+                    System.err.println("Erro ao excluir modalidade: " + e.getMessage());
+                } finally {
+                    jpa.fecharConexao();
+                }
+            }
         
+          
         
     }//GEN-LAST:event_btnRemoverActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-    
+        /*
        Modalidades modaSele = lstModalidades.getSelectedValue();
        PersistenciaJPA jpa2 = new PersistenciaJPA();
          
@@ -181,7 +188,16 @@ public class TelaModalidades extends javax.swing.JFrame {
        }
        else
             System.out.println("Erro ao selecionar modalidade!");
-        
+        */
+        Modalidades modalidadeSelecionada = lstModalidades.getSelectedValue();
+        if (modalidadeSelecionada != null) {
+            TelaCadastroModalidade dialog = new TelaCadastroModalidade(this, true);
+            dialog.setModalidade(modalidadeSelecionada);
+            dialog.setVisible(true);
+            mostraModalidades();
+        } else {
+            JOptionPane.showMessageDialog(this, "Nenhuma modalidade selecionada.", "Atenção", JOptionPane.WARNING_MESSAGE);
+        }
         
 
     }//GEN-LAST:event_btnEditarActionPerformed

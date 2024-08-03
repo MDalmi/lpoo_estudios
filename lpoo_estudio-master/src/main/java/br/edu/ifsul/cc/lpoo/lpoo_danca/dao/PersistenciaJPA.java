@@ -9,6 +9,7 @@ import br.edu.ifsul.cc.lpoo.lpoo_danca.model.Modalidades;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 /**
@@ -51,12 +52,20 @@ public class PersistenciaJPA implements InterfacePersistencia{
     }
 
     @Override
-    public void remover(Object o) throws Exception {
-        entity.getTransaction().begin();// abrir a transacao.
-        entity.remove(o); //realiza o delete
-        entity.getTransaction().commit(); //comita a transacao (comando sql)   
+    public void remover(Object obj) {
+        EntityTransaction transaction = entity.getTransaction();
+    try {
+        transaction.begin();
+        Object managedObj = entity.merge(obj); // Anexa o objeto ao contexto de persistência
+        entity.remove(managedObj); // Remove o objeto gerenciado
+        transaction.commit();
+    } catch (Exception e) {
+        if (transaction.isActive()) {
+            transaction.rollback();
+        }
+        throw e;
     }
-    
+}
     public List<Modalidades> getModalidades() {
         return entity.createQuery("SELECT m FROM Modalidades m", Modalidades.class).getResultList();
 }}
