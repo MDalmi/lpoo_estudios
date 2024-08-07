@@ -7,6 +7,7 @@ package br.edu.ifsul.cc.lpoo.lpoo_danca.view;
 import br.edu.ifsul.cc.lpoo.lpoo_danca.dao.PersistenciaJPA;
 import br.edu.ifsul.cc.lpoo.lpoo_danca.model.Modalidades;
 import br.edu.ifsul.cc.lpoo.lpoo_danca.model.Professores;
+import java.util.List;
 import javax.swing.JOptionPane;
 /**
  *
@@ -23,7 +24,8 @@ public class TelaCadastroModalidade extends javax.swing.JDialog {
         super(parent, modal);
         
         initComponents();
-       
+        
+        listarProfessores();
     }
     
     public void setModalidade(Modalidades modalidade) {   
@@ -31,6 +33,8 @@ public class TelaCadastroModalidade extends javax.swing.JDialog {
         if (modalidade != null) {
             txtID.setText(modalidade.getId() != null ? modalidade.getId().toString() : "");
             txtDescModalidade.setText(modalidade.getDescricao());
+            cmboxProfessores.getModel().setSelectedItem(modalidade.getProfessor().getNome());
+
         } else {
             JOptionPane.showMessageDialog(this, "Modalidade não selecionada!");
             dispose();
@@ -52,6 +56,7 @@ public class TelaCadastroModalidade extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         txtID = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        cmboxProfessores = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -80,22 +85,23 @@ public class TelaCadastroModalidade extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(49, 49, 49)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
                         .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(txtDescModalidade, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(50, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(cmboxProfessores, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1)
+                                .addComponent(txtDescModalidade, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,11 +114,13 @@ public class TelaCadastroModalidade extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtID, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
                     .addComponent(txtDescModalidade))
-                .addGap(38, 38, 38)
+                .addGap(19, 19, 19)
+                .addComponent(cmboxProfessores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(149, Short.MAX_VALUE))
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(128, Short.MAX_VALUE))
         );
 
         pack();
@@ -127,24 +135,39 @@ public class TelaCadastroModalidade extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
      private void SalvaModalidade() {
-            
         if (modalidade != null) {
-            
             PersistenciaJPA jpa = new PersistenciaJPA();
             try {
-                   jpa.conexaoAberta();
-                   Modalidades modaJPA = (Modalidades) jpa.find(Modalidades.class, modalidade.getId());
-                   modaJPA.setDescricao(txtDescModalidade.getText());
-                  jpa.persist(modaJPA);
-                   jpa.fecharConexao();
-                   dispose();
-               } catch (Exception e) {
-                   System.err.println("ERRRO TOTTAALLL!");
-               }  
+                jpa.conexaoAberta();
+                Modalidades modaJPA = (Modalidades) jpa.find(Modalidades.class, modalidade.getId());
+                modaJPA.setDescricao(txtDescModalidade.getText());
+
+                Professores professor = (Professores) cmboxProfessores.getSelectedItem();
+                modaJPA.setProfessor(professor);
+
+                jpa.persist(modaJPA);
+                jpa.fecharConexao();
+                dispose();
+            } catch (Exception e) {
+                System.err.println("Erro ao salvar a modalidade!");
+                e.printStackTrace();
+            }
         }
-        
     }
-    
+
+    public void listarProfessores() {
+        cmboxProfessores.removeAllItems();
+        PersistenciaJPA jpa = new PersistenciaJPA();
+        jpa.conexaoAberta();
+        List<Professores> lista = jpa.getProfessores();
+
+        for (Professores o : lista) {
+            cmboxProfessores.addItem(o);
+        }
+
+        jpa.fecharConexao();
+    }
+  
     /**
      * @param args the command line arguments
      */
@@ -190,6 +213,7 @@ public class TelaCadastroModalidade extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JComboBox<Professores> cmboxProfessores;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField txtDescModalidade;

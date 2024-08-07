@@ -7,6 +7,7 @@ package br.edu.ifsul.cc.lpoo.testProduto;
 
 import br.edu.ifsul.cc.lpoo.lpoo_danca.dao.PersistenciaJPA;
 import br.edu.ifsul.cc.lpoo.lpoo_danca.model.Modalidades;
+import br.edu.ifsul.cc.lpoo.lpoo_danca.model.Professores;
 import org.junit.Test;
 
 /**
@@ -22,10 +23,11 @@ public class TestPersistenciaJPA {
         
         if (jpa.conexaoAberta()) {
             System.out.println("conectou no BD via jpa ...");
-            jpa.fecharConexao();
+            
+            Professores professor = new Professores();
             
            
-            
+            jpa.fecharConexao();
        
             
         } else {

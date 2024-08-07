@@ -170,31 +170,13 @@ public class TelaModalidades extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRemoverActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        /*
-       Modalidades modaSele = lstModalidades.getSelectedValue();
-       PersistenciaJPA jpa2 = new PersistenciaJPA();
-         
-       if(modaSele != null){
-               try {
-                   jpa2.conexaoAberta();
-                   Modalidades modaJPA = (Modalidades) jpa2.find(Modalidades.class, modaSele.getId());
-                   modaJPA.setDescricao(JOptionPane.showInputDialog(rootPane, "Nova descrição:", modaSele.getDescricao()));  
-                   jpa2.persist(modaJPA);
-                   jpa2.fecharConexao();
-                   mostraModalidades();
-               } catch (Exception e) {
-                   System.err.println("ERRRO TOTTAALLL!");
-               }  
-       }
-       else
-            System.out.println("Erro ao selecionar modalidade!");
-        */
+        
         Modalidades modalidadeSelecionada = lstModalidades.getSelectedValue();
         if (modalidadeSelecionada != null) {
-            TelaCadastroModalidade dialog = new TelaCadastroModalidade(this, true);
-            dialog.setModalidade(modalidadeSelecionada);
-            dialog.setVisible(true);
-            mostraModalidades();
+           TelaCadastroModalidade dialog = new TelaCadastroModalidade(this, true);
+                dialog.setModalidade(modalidadeSelecionada);
+                dialog.setVisible(true);
+                mostraModalidades();
         } else {
             JOptionPane.showMessageDialog(this, "Nenhuma modalidade selecionada.", "Atenção", JOptionPane.WARNING_MESSAGE);
         }

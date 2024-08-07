@@ -25,8 +25,8 @@ import javax.persistence.TemporalType;
  */
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@DiscriminatorColumn(name = "DTYPE")
+@DiscriminatorColumn(name = "tipo")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) 
 public abstract class Pessoas implements Serializable {
 
     @Id

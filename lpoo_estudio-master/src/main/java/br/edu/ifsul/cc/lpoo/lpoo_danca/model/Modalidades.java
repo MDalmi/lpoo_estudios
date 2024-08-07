@@ -30,15 +30,27 @@ public class Modalidades implements Serializable {
     @Column(nullable = false, length = 120)
     private String descricao;
     
+    @ManyToOne
+    private Professores professor;
     
     public Modalidades() {
     }
 
-    public Modalidades(Integer id, String descricao) {
+    public Modalidades(Integer id, String descricao, Professores professor) {
         this.id = id;
         this.descricao = descricao;
-        
+        this.professor = professor;
     }
+
+    public void setProfessor(Professores professor) {
+        this.professor = professor;
+    }
+
+    public Professores getProfessor() {
+        return professor;
+    }
+
+    
 
     
     public Integer getId() {

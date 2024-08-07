@@ -4,15 +4,13 @@
  */
 package br.edu.ifsul.cc.lpoo.lpoo_danca.model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -22,7 +20,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @DiscriminatorValue("P")
-public class Professores extends Pessoas{
+public class Professores extends Pessoas implements Serializable{
     
     @Column(nullable = true)
     @Temporal(TemporalType.DATE)
@@ -31,14 +29,15 @@ public class Professores extends Pessoas{
     @OneToMany(mappedBy = "professor")
     private Collection<FolhaPagamento> folhapagamento;
    
-    @ManyToMany
+    @OneToMany(mappedBy = "professor")
     private Collection<Modalidades> modalidades;
 
     public Professores() {
     }
 
-    public Professores(Calendar dataAdmissao, Collection<FolhaPagamento> folhapagamento, Collection<Modalidades> modalidades, Integer id, String nome, String fone, Calendar dataAniver, String email, String endereco) {
-        
+  
+   
+    public Professores(Calendar dataAdmissao, Collection<FolhaPagamento> folhapagamento, Collection<Modalidades> modalidades) {
         this.dataAdmissao = dataAdmissao;
         this.folhapagamento = folhapagamento;
         this.modalidades = modalidades;
@@ -68,6 +67,15 @@ public class Professores extends Pessoas{
     public Collection<FolhaPagamento> getFolhapagamento() {
         return folhapagamento;
     }
+
+    @Override
+    public String toString() {
+        return getNome();// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
+    
+
+    
     
     
     
